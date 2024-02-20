@@ -1,5 +1,5 @@
 {
-  "name": "pingpongbot",
+  "name": "tamirgpt",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,7 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.4",
-    "grammy": "^1.11.2"
+    "grammy": "^1.11.2",
+    "openai": "^4.28.0"
   },
   "devDependencies": {
     "ts-node": "^10.9.1",
