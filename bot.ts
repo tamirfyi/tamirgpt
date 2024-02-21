@@ -1,4 +1,4 @@
-import { Bot } from 'grammy';
+import { Bot, InlineKeyboard, Keyboard } from 'grammy';
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -6,9 +6,7 @@ dotenv.config();
 const conversations = new Map();
 
 const bot = new Bot(`${process.env.TELEGRAM_BOT_TOKEN}`);
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 bot.command('ask', async (ctx) => {
   const chatId = ctx.chat.id.toString();
@@ -48,5 +46,71 @@ bot.command('ask', async (ctx) => {
     ctx.reply('Could not complete your request. Please try again later');
   }
 });
+
+//Custom keyboard buttons
+//Will send exactly what the button text consists of
+bot.command('custom', async (ctx) => {
+  const labels = ['gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo', 'dalle'];
+
+  const buttonRows = labels.map((label) => [Keyboard.text(label)]);
+  const keyboard = Keyboard.from(buttonRows)
+    .placeholder('Testing placeholder')
+    .resized()
+    .oneTime();
+
+  await ctx.reply(ctx.msg.text, {
+    reply_markup: keyboard,
+  });
+});
+
+//Inline keybords
+bot.command('inline', async (ctx) => {
+  const keyboard = new InlineKeyboard();
+
+  keyboard
+    .row()
+    .text('gpt-3.5-turbo', 'gpt-3.5-turbo')
+    .row()
+    .text('gpt-4', 'gpt-4')
+    .row()
+    .text('gpt-4.5-turbo', 'gpt-4.5-turbo')
+    .row()
+    .text('dalle', 'dalle');
+
+  await ctx.reply('Please select the model you would like to use!', {
+    reply_markup: keyboard,
+  });
+});
+
+bot.callbackQuery('gpt-3.5-turbo', async (ctx) => {
+  // You can respond via message response (commented out) or the top-bar
+  // await ctx.reply(`You selected ${ctx.callbackQuery.data}`)
+  await ctx.answerCallbackQuery({
+    text: `You selected ${ctx.callbackQuery.data}`,
+  });
+});
+
+bot.callbackQuery('gpt-4', async (ctx) => {
+  // await ctx.reply(`You selected ${ctx.callbackQuery.data}`)
+  await ctx.answerCallbackQuery({
+    text: `You selected ${ctx.callbackQuery.data}`,
+  });
+});
+
+bot.callbackQuery('gpt-4.5-turbo', async (ctx) => {
+  // await ctx.reply(`You selected ${ctx.callbackQuery.data}`)
+  await ctx.answerCallbackQuery({
+    text: `You selected ${ctx.callbackQuery.data}`,
+  });
+});
+
+bot.callbackQuery('dalle', async (ctx) => {
+  // await ctx.reply(`You selected ${ctx.callbackQuery.data}`)
+  await ctx.answerCallbackQuery({
+    text: `You selected ${ctx.callbackQuery.data}`,
+  });
+});
+
+bot.command('');
 
 bot.start();
