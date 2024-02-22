@@ -1,6 +1,6 @@
 import { Bot } from 'grammy';
 import dotenv from 'dotenv';
-import { findOrCreateUser } from './auth/auth';
+import { findOrCreateUser } from './auth';
 dotenv.config();
 
 import prisma from '../prisma/prismaClient';

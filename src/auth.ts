@@ -1,4 +1,4 @@
-import prisma from '../../prisma/prismaClient';
+import prisma from '../prisma/prismaClient';
 
 export const findOrCreateUser = async (id?: number) => {
   if (!id) {
